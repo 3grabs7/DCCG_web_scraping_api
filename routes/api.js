@@ -8,6 +8,14 @@ const validEndpoints = {
 	fulltext: (input) => (input != 'true') & (input != 'false'),
 };
 
+//* Supported games
+const validGamesValue = [
+	'hearthstone',
+	'mythgard',
+	'artifact',
+	'legends-of-runeterra',
+];
+
 router.get('/', (req, res) =>
 	res.json({ msg: 'Available pages to scrape from as for now : *OOC*, ' })
 );
