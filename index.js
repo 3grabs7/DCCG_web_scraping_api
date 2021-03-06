@@ -4,10 +4,12 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
+app.use(morgan('dev'));
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {});
 
-app.use('/scraping', require('./routes/scraping'));
+app.use('/api', require('./routes/api'));
 
 const port = process.env.PORT ?? 4455;
 app.listen(port, () =>

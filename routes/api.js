@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+//* Endpoints/types reference
 const validEndpoints = {
 	query: (input) => typeof input != 'string',
 	limit: (input) => isNaN(input),
@@ -8,14 +9,23 @@ const validEndpoints = {
 };
 
 router.get('/', (req, res) =>
-	res.json({ msg: "Here you'll find some scraping being done." })
+	res.json({ msg: 'Available pages to scrape from as for now : *OOC*, ' })
 );
+
+router.get('/all', (req, res) => {
+	res.json({ msg: 'Scraping will be done for all available sites' });
+});
+
+//* ======================
+//* === OOC Web Scrape ===
+//* ======================
+
+const oocWebScraper = require('../ooc_webscraper');
 
 router.get('/ooc', (req, res) =>
 	res.json({ msg: 'Get the home page of ooc scraped for custom news.' })
 );
 
-const oocWebScraper = require('../ooc_webscraper');
 router.get('/ooc/:query', async (req, res) => {
 	let requestOK = true;
 
@@ -48,11 +58,13 @@ router.get('/ooc/:query', async (req, res) => {
 		return;
 	}
 
-	console.log(args);
-
 	//* Scrape with provided endpoints and return
 	let jsonResponse = await oocWebScraper(args);
 	res.status(200).json({ status: 200, response: jsonResponse });
 });
+
+//* ============================
+//* === HearthPwn Web Scrape ===
+//* ============================
 
 module.exports = router;
