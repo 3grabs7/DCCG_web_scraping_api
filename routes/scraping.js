@@ -16,7 +16,7 @@ router.get('/ooc', (req, res) =>
 );
 
 const oocWebScraper = require('../ooc_webscraper');
-router.get('/ooc/:query', (req, res) => {
+router.get('/ooc/:query', async (req, res) => {
 	let requestOK = true;
 
 	//* Break out endpoints
@@ -47,11 +47,12 @@ router.get('/ooc/:query', (req, res) => {
 	if (!requestOK) {
 		return;
 	}
+
 	console.log(args);
 
 	//* Scrape with provided endpoints and return
-	let json = oocWebScraper(args);
-	res.status(200).json({ status: 200, response: args });
+	let jsonResponse = await oocWebScraper(args);
+	res.status(200).json({ status: 200, response: jsonResponse });
 });
 
 module.exports = router;
