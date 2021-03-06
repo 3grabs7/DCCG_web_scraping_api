@@ -1,0 +1,30 @@
+{
+  "name": "web_scraping_node",
+  "version": "1.0.0",
+  "description": "web scraping with axios and cheerio",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3grabs7/first_web_scraping_node.git"
+  },
+  "author": "RG",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/3grabs7/first_web_scraping_node/issues"
+  },
+  "homepage": "https://github.com/3grabs7/first_web_scraping_node#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
