@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const validEndpoints = { query: 'string', limit: 'int', fulltext: 'bool' };
+const validEndpoints = {
+	query: (input) => typeof input != 'string',
+	limit: (input) => isNaN(input),
+	fulltext: (input) => (input != 'true') & (input != 'false'),
+};
 
 router.get('/', (req, res) =>
 	res.json({ msg: "Here you'll find some scraping being done." })
@@ -31,10 +35,7 @@ router.get('/ooc/:query', (req, res) => {
 			requestOK = false;
 			return;
 		}
-		if (
-			requestOK &&
-			typeof validEndpoints[arg.endpoint].value != typeof arg.value
-		) {
+		if (requestOK && validEndpoints[arg.endpoint](arg.value)) {
 			res.status(400).json({
 				status: 400,
 				msg: `Value '${arg.value}' for endpoint '${arg.endpoint}' is invalid.`,
