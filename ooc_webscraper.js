@@ -39,7 +39,7 @@ module.exports = async (endpoints) => {
 			// Check for specific game || Hardcoded for hearthstone for now
 			if (game === /* Variable for chosen game goes here --> */ 'hearthstone') {
 				const title = $element.find('.article-details h1 a').text();
-				const url = `https:/${$element
+				const url = `https://outof.cards/${$element
 					.find('.article-details h1 a')
 					.attr('href')
 					.replace('https:/', '')}`;
@@ -71,10 +71,17 @@ module.exports = async (endpoints) => {
 };
 
 async function getFullTextAsBody(url) {
+	let fullText = '';
+
 	const { data } = await axios.get(url);
-	console.log(data);
 	const $ = cheerio.load(data);
+
 	$('#article-sweet').each((index, element) => {
 		const $element = $(element);
+		fullText += $element.find('.article-body p').text() + '\n';
 	});
+
+	console.log(fullText);
+
+	return '';
 }
