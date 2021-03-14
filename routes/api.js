@@ -75,4 +75,46 @@ router.get('/ooc/:query', async (req, res) => {
 //* === HearthPwn Web Scrape ===
 //* ============================
 
+const hearthpwnWebScraper = require('../hearthpwn_webscraper');
+
+router.get('/hearthpwn', (req, res) =>
+	res.json({ msg: 'Get the home page of hearthpwn scraped for custom news.' })
+);
+
+router.get('/hearthpwn/:query', async (req, res) => {
+	let requestOK = true;
+
+	//* Break out endpoints
+	const args = req.params.query.split('&').map((arg) => {
+		const endpoint = arg.split('=')[0];
+		const value = arg.split('=')[1];
+		return { endpoint, value };
+	});
+
+	//* Check validity of endpoints
+	args.forEach((arg) => {
+		if (requestOK && !validEndpoints[arg.endpoint]) {
+			res
+				.status(400)
+				.json({ status: 400, msg: `Endpoint '${arg.endpoint}' is invalid.` });
+			requestOK = false;
+			return;
+		}
+		if (requestOK && validEndpoints[arg.endpoint](arg.value)) {
+			res.status(400).json({
+				status: 400,
+				msg: `Value '${arg.value}' for endpoint '${arg.endpoint}' is invalid.`,
+			});
+			requestOK = false;
+			return;
+		}
+	});
+	if (!requestOK) {
+		return;
+	}
+
+	//* Scrape with provided endpoints and return
+	let jsonResponse = await hearthpwnWebScraper(args);
+	res.status(200).json({ status: 200, response: jsonResponse });
+});
 module.exports = router;
