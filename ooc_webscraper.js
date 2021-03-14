@@ -21,7 +21,7 @@ module.exports = async (endpoints) => {
 	// Loop through pages until limit is met
 	let pageCounter = 1;
 	while (response.articles.length < responseMatchesLimit) {
-		// Get html from page to scrape
+		// Get html text from page to scrape
 		let oocCurrentScrapeURL = `${oocBaseURL}${pageCounter}`;
 		const { data } = await axios.get(oocCurrentScrapeURL);
 		const $ = cheerio.load(data);
@@ -46,8 +46,9 @@ module.exports = async (endpoints) => {
 				const thumbnail = $element.find('.post-image').attr('src');
 
 				let fullText = 'Text body omitted.';
+				// If fulltext's included get full text from article
 				if (includeFullText) {
-					const fullText = await getFullTextAsBody(url);
+					fullText = await getFullTextAsBody(url);
 				}
 
 				const article = {
@@ -70,6 +71,7 @@ module.exports = async (endpoints) => {
 	return response;
 };
 
+// Method for getting full article text
 async function getFullTextAsBody(url) {
 	let fullText = '';
 
@@ -83,5 +85,5 @@ async function getFullTextAsBody(url) {
 
 	console.log(fullText);
 
-	return '';
+	return fullText;
 }

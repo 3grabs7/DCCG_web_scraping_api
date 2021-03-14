@@ -13,5 +13,5 @@ app.use('/api', require('./routes/api'));
 
 const port = process.env.PORT ?? 4455;
 app.listen(port, () =>
-	console.log(`It's all happening here -> http://localhost:${port}`)
+	console.log(`It's all happening here -> http://localhost:${port}/`)
 );
